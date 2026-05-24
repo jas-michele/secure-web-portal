@@ -13,7 +13,7 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                const existingUser = await User.findOne({githubID: profile.id});
+                const existingUser = await User.findOne({githubId: profile.id});
 
                 if (existingUser) {
                     return done(null, existingUser);
@@ -33,3 +33,20 @@ passport.use(
             }
     )
 )
+
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+});
+
+passport.deserializeUser( async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+
+    } catch (err) {
+        done(err)
+    }
+
+})    
+
+module.exports = passport;
