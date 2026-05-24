@@ -35,6 +35,34 @@ router.post('/register', async (req, res) => {
         console.log(error)
         res.status(400).json(error);
     }
+});
+
+router.post('/login', async (req, res) => {
+
+    try {
+    const user = await User.findOne({ email: req.body.email});
+
+
+    if (!user) {
+        return res.status(400).json({ message: "Invalid email or password"});
+    }
+
+    const correctPw = await user.isCorrectPassword(req.body.password);
+
+    if (!correctPw) {
+        return res.status(400).json({ message: 'Wrong password'});
+    }
+
+    const token = signToken(user);
+    res.json({ token, user})
+
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({
+            message: error.message
+        })
+    }
 })
 
 module.exports = router;
