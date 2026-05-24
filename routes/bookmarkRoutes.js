@@ -13,3 +13,15 @@ router.get('/', async (req, res ) => {
         res.status(500).json(error)
     }
 });
+
+router.post('/new', async (req, res) => {
+    try {
+        const note = await Note.create({
+            ...req.body,
+            user: req.user._id
+        });
+        res.status(201).json(note);
+    } catch (err) {
+        res.status(400).json(err)
+    }
+});
