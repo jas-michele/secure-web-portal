@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/userModel');
 const { signToken } = require('../utils/auth');
+const passport = require('../config/passport')
 
 router.post('/register', async (req, res) => {
     try {
@@ -65,4 +66,18 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.get('/auth/github', passport.authenticate('github', { scope: ['user:email']}))
+
+router.get('/auth/github/callback', 
+    passport.authenticate('github', {session: false}),
+    (req, res) => {
+
+        const token = signToken(req.user);
+
+        res.json({
+            token,
+            user: req.user
+        })
+    }
+)
 module.exports = router;
