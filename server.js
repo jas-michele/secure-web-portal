@@ -5,14 +5,14 @@ require('dotenv').config();
 require('./config/db')
 const PORT = process.env.PORT;
 
-const userRoutes = require('./routes/userRoutes')
+const Routes = require('./routes/index')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
 const User = require('./models/userModel');
 
-app.use('/api/users', userRoutes)
+app.use('/api/users', Routes);
 
 
 
