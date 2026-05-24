@@ -28,12 +28,12 @@ router.post('/new', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const note = await Note.findById(req.params.id, req.body, { new: true });
         if (!note) {
             return res.status(404).json({ message: 'No note found with this id'});
         }
 
-        if (note.user.toString() !== req.user._id) {
+        if (note.user.toString() !== req.user._id.toString()) {
             return res.status(403).json({
                 message: 'User is not authorized to update this note'
             })
@@ -59,7 +59,7 @@ router.delete('/:id', async (req, res) => {
             return res.status(404).json({ message: 'No note found with this id'});
         }
 
-        if (note.user.toString() !== req.user._id) {
+        if (note.user.toString() !== req.user._id.toString()) {
             return res.status(403).json({
                 message: 'User is not authorized to delete this note'
             })
