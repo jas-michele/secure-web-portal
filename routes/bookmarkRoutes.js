@@ -25,3 +25,28 @@ router.post('/new', async (req, res) => {
         res.status(400).json(err)
     }
 });
+
+router.put('/:id', async (req, res) => {
+    try {
+        const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!note) {
+            return res.status(404).json({ message: 'No note found with this id'});
+        }
+
+        if (note.user.toString() !== req.user._id) {
+            return res.status(403).json({
+                message: 'User is not authorized to update this note'
+            })
+        }
+
+        const updateNote = await Note.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true}
+        );
+
+        res.json(updateNote);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
