@@ -53,7 +53,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const note = await Note.find(req.params.id);
+        const note = await Note.findById(req.params.id);
 
         if (!note) {
             return res.status(404).json({ message: 'No note found with this id'});
