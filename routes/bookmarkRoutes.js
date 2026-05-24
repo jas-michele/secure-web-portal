@@ -28,7 +28,7 @@ router.post('/new', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const note = await Note.findById(req.params.id, req.body, { new: true });
+        const note = await Note.findById(req.params.id);
         if (!note) {
             return res.status(404).json({ message: 'No note found with this id'});
         }

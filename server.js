@@ -12,7 +12,7 @@ app.use(express.json());
 
 const User = require('./models/userModel');
 
-app.use('/api/users', Routes);
+app.use('/api', Routes);
 
 
 
