@@ -51,7 +51,7 @@ router.post('/login', async (req, res) => {
     const correctPw = await user.isCorrectPassword(req.body.password);
 
     if (!correctPw) {
-        return res.status(400).json({ message: 'Wrong password'});
+        return res.status(400).json({ message: 'Invalid email or password'});
     }
 
     const token = signToken(user);
